@@ -19,7 +19,6 @@
 [![AWS EC2](https://img.shields.io/badge/AWS-EC2-FF9900?style=flat-square&logo=amazonaws&logoColor=white)](https://aws.amazon.com/ec2)
 [![Qdrant](https://img.shields.io/badge/Qdrant-VectorDB-DC244C?style=flat-square)](https://qdrant.tech)
 [![Telegram](https://img.shields.io/badge/Telegram-Mobile_Client-26A5E4?style=flat-square&logo=telegram&logoColor=white)](https://telegram.org)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
 </div>
 
