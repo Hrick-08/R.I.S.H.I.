@@ -144,40 +144,6 @@ The core intelligence runs on **AWS EC2**, orchestrated through **OpenClaw** as 
 
 ---
 
-## Project Structure
-
-```
-RISHI/
-├── agents/
-│   ├── web_search.py           # Gemini-powered search agent
-│   ├── image_gen.py            # HuggingFace Stable Diffusion
-│   ├── email_agent.py          # Email compose + send
-│   └── file_agent.py           # File read/write operations
-│
-├── rag/
-│   ├── ingest.py               # Document ingestion pipeline
-│   ├── retriever.py            # Qdrant query + semantic search
-│   └── embedder.py             # Gemini Embedding 2 wrapper
-│
-├── memory/
-│   └── context_store.py        # Full user context management
-│
-├── knowledge_base/             # Personal KB source documents
-│   ├── *.pdf
-│   └── *.md
-│
-├── openclaw/
-│   └── config.yaml             # OpenClaw skill + tool config
-│
-├── telegram/
-│   └── bot.py                  # Telegram mobile client handler
-│
-├── .env.example
-└── README.md
-```
-
----
-
 ## Setup
 
 ### Prerequisites
@@ -187,29 +153,7 @@ RISHI/
 - OpenClaw installed on the EC2 instance
 - Telegram Bot token (via BotFather)
 
-### Install & Run
-
-```bash
-git clone https://github.com/Hrick-08/RISHI.git
-cd RISHI
-
-python -m venv venv
-source venv/bin/activate
-
-pip install -r requirements.txt
-
-cp .env.example .env
-# Fill in your keys (see below)
-
-# Start Qdrant
-docker run -p 6333:6333 -v $(pwd)/qdrant_storage:/qdrant/storage qdrant/qdrant
-
-# Ingest your knowledge base
-python -m rag.ingest --source ./knowledge_base/
-
-# Start the Telegram bot
-python telegram/bot.py
-```
+---
 
 ### OpenClaw
 
@@ -281,9 +225,8 @@ R.I.S.H.I. is that. It's not a product. It's infrastructure for thinking.
 
 ## Author
 
-**Hrick** — B.E. CSE (AI & ML), Chitkara University Punjab  
-Web Developer @ GDG On Campus Chitkara  
-[hrick.me](https://hrick.me) · [GitHub](https://github.com/Hrick-08)
+**Hritabrata Das** — B.E. CSE (AI & ML), Chitkara University Punjab  
+[hrick.me](https://hrick.me) · [GitHub](https://github.com/Hrick-08) · [LinkedIn](http://linkedin.com/in/hritabrata-das) 
 
 ---
 
