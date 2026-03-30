@@ -164,33 +164,6 @@ The core intelligence runs on **AWS EC2**, orchestrated through **OpenClaw** as 
 
 ---
 
-## Environment Variables
-
-```env
-# LLM
-GITHUB_COPILOT_TOKEN=
-GEMINI_API_KEY=
-
-# Qdrant
-QDRANT_HOST=localhost
-QDRANT_PORT=6333
-
-# HuggingFace
-HF_API_TOKEN=
-
-# Telegram
-TELEGRAM_BOT_TOKEN=
-
-# Email Agent
-EMAIL_ADDRESS=
-EMAIL_APP_PASSWORD=
-
-# AWS
-AWS_REGION=
-EC2_HOST=
-```
-
----
 
 ## Why I Built This
 
