@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+python-telegram-bot==20.*
+openai>=1.30
+qdrant-client[async]
+aiosqlite
+pydantic-settings
+python-dotenv
+httpx
