@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     qdrant_url: str = "http://localhost:6333"
     qdrant_collection: str = "rishi_knowledge"
     webhook_url: str = ""
+    openclaw_token: str = ""
     port: int = 8000
 
     class Config:

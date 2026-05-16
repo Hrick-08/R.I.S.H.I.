@@ -19,6 +19,12 @@ def get_llm() -> tuple[AsyncOpenAI, str]:
             api_key=settings.zen_api_key, base_url=settings.zen_base_url
         )
         return client, settings.zen_model
+    if backend == "openclaw":
+        client = AsyncOpenAI(
+            api_key=settings.openclaw_token,
+            base_url="http://127.0.0.1:18789/v1",
+        )
+        return client, "openclaw"               # routes to your "main" agent
     client = AsyncOpenAI(
         api_key=settings.github_token, base_url=settings.github_models_base_url
     )

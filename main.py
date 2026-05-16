@@ -7,15 +7,56 @@ from rag.qdrant_client import ensure_collection
 from config import settings
 
 ptb_app = build_app()
+polling_task = None
+
+
+async def run_polling():
+    """Run polling in background, dropping any pending/old updates."""
+    try:
+        print("Starting Telegram polling...")
+        await ptb_app.updater.start_polling(
+            allowed_updates=Update.ALL_TYPES,
+            drop_pending_updates=True,   # ← skips accumulated old messages
+        )
+    except Exception as e:
+        print(f"Polling error: {e}")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await ensure_collection()
+    global polling_task
+
+    try:
+        await ensure_collection()
+    except Exception as e:
+        print(f"Warning: Failed to initialize Qdrant: {e}")
+
+    # Correct PTB startup sequence: initialize → start → poll
     await ptb_app.initialize()
+    await ptb_app.start()          # ← starts dispatcher queues; was missing
+
     if settings.webhook_url:
-        await ptb_app.bot.set_webhook(f"{settings.webhook_url}/webhook")
+        # Production: use webhook
+        await ptb_app.bot.set_webhook(
+            f"{settings.webhook_url}/webhook",
+            drop_pending_updates=True,
+        )
+    else:
+        # Local development: polling as background task
+        polling_task = asyncio.create_task(run_polling())
+
     yield
+
+    # Correct PTB teardown sequence: stop polling → stop → shutdown
+    if polling_task:
+        await ptb_app.updater.stop()   # ← gracefully stops the updater first
+        polling_task.cancel()
+        try:
+            await polling_task
+        except asyncio.CancelledError:
+            pass
+
+    await ptb_app.stop()           # ← drains dispatcher; was missing
     await ptb_app.shutdown()
 
 

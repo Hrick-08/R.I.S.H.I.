@@ -1,5 +1,5 @@
 from qdrant_client import AsyncQdrantClient
-from qdrant_client.models import Distance, VectorParams
+from qdrant_client.models import Distance, VectorParams, Query
 from config import settings
 
 _client = AsyncQdrantClient(url=settings.qdrant_url)
@@ -16,9 +16,10 @@ async def ensure_collection():
 
 
 async def search_qdrant(vector: list[float], top_k: int = 4):
-    return await _client.search(
+    response = await _client.query_points(
         collection_name=settings.qdrant_collection,
-        query_vector=vector,
+        query=vector,
         limit=top_k,
         with_payload=True,
     )
+    return response.points  # list of ScoredPoint, same as .search() returned

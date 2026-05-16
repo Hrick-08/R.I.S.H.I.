@@ -1,6 +1,6 @@
 .ruff_cache/
 __pycache__/
 *.pyc
-# Ignore .env file containing sensitive information
 .env
 .venv/
+memory/memory.db
