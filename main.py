@@ -4,6 +4,7 @@ from fastapi import FastAPI, Request
 from telegram import Update
 from bot.telegram_handler import build_app
 from rag.qdrant_client import ensure_collection
+from rag.ingest import ingest_uploads_folder
 from config import settings
 
 ptb_app = build_app()
@@ -28,6 +29,7 @@ async def lifespan(app: FastAPI):
 
     try:
         await ensure_collection()
+        await ingest_uploads_folder()
     except Exception as e:
         print(f"Warning: Failed to initialize Qdrant: {e}")
 

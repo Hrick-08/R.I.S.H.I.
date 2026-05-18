@@ -1,6 +1,0 @@
-Start qdrant
-docker run -p 6333:6333 -p 6334:6334 qdrant/qdrant:latest
-
-Start backend
-
-Add backend url to .env

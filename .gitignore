@@ -4,3 +4,5 @@ __pycache__/
 .env
 .venv/
 memory/memory.db
+uploads/
+openclaw_chat_completions_test.py

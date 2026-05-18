@@ -40,17 +40,57 @@ async def ingest_file(path: Path, source: str):
     print(f"Ingested {len(points)} chunks from {path.name}")
 
 
+async def ingest_uploads_folder():
+    """Ingest all files from the uploads folder into Qdrant."""
+    uploads_path = Path("uploads")
+    
+    if not uploads_path.exists():
+        print(f"Uploads folder not found at {uploads_path}")
+        return
+    
+    await ensure_collection()
+    
+    # Find all supported file types
+    supported_extensions = {".md", ".txt", ".pdf"}
+    files = [f for f in uploads_path.rglob("*") if f.suffix in supported_extensions]
+    
+    if not files:
+        print(f"No supported files found in {uploads_path}")
+        return
+    
+    print(f"Found {len(files)} files to ingest from uploads folder")
+    
+    for f in files:
+        try:
+            await ingest_file(f, source="uploads")
+        except Exception as e:
+            print(f"Error ingesting {f.name}: {e}")
+    
+    print(f"Completed ingesting {len(files)} files from uploads folder")
+
+
 async def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--path", required=True)
+    parser.add_argument("--path")
     parser.add_argument("--source", default="document")
+    parser.add_argument("--uploads", action="store_true", help="Ingest all files from uploads folder")
     args = parser.parse_args()
+    
     await ensure_collection()
-    p = Path(args.path)
-    files = list(p.rglob("*")) if p.is_dir() else [p]
-    for f in files:
-        if f.suffix in [".md", ".txt", ".pdf"]:
-            await ingest_file(f, args.source)
+    
+    if args.uploads:
+        await ingest_uploads_folder()
+    elif args.path:
+        p = Path(args.path)
+        files = list(p.rglob("*")) if p.is_dir() else [p]
+        for f in files:
+            if f.suffix in [".md", ".txt", ".pdf"]:
+                try:
+                    await ingest_file(f, args.source)
+                except Exception as e:
+                    print(f"Error ingesting {f.name}: {e}")
+    else:
+        parser.print_help()
 
 
 if __name__ == "__main__":
